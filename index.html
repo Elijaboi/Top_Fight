@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./style.css">
+        <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    </head>
+    <body>
+        <script>
+            var config = {
+                type: Phaser.AUTO,
+                width: 800,
+                height: 600,
+                physics: {
+                    default: 'arcade',
+                    arcade: {
+                        gravity: { z: 200 }
+                    }
+                },
+                scene: {
+                    preload: preload,
+                    create: create,
+                    update: update
+                }
+            };
+        
+            var game = new Phaser.Game(config);
+
+            //initialise global variables
+            var player;
+            var obstacles;
+            var cursors;
+            
+            var yLimit;
+            var xLimit;
+        
+            function preload ()
+            {
+                this.load.image('sky', 'assets/octagon.jpg');
+                this.load.image('circle', 'assets/circle.png');
+                this.load.image('grey_tile', 'assets/grey_tile.png');
+                
+            }
+        
+            function create ()
+            {
+                let background = this.add.image(0, 0, 'sky');
+                let item1 = this.add.image(380, 320, 'grey_tile')
+                background.x = background.displayWidth / 2;
+                background.y = background.displayHeight/1.5;
+                xLimit = background.displayWidth; //the player cannot go beyond these x and
+                yLimit = background.displayHeight;
+                //var particles = this.add.particles('circle');
+                player = this.physics.add.sprite(300, 300, 'circle'); //create the player sprite
+                player.setScale(0.4);
+               // var emitter = particles.createEmitter({
+                  //  speed: 100,
+                  //  scale: { start: 1, end: 0 },
+                   // blendMode: 'ADD'
+               // });
+               
+               item1.setInteractive().on('pointerdown', function() {item1.setTint(0x39FF14)});
+               cursors = this.input.keyboard.createCursorKeys();    
+            }
+
+            function update ()
+            {
+                if (cursors.left.isDown && player.x >= 0) {
+      player.setVelocityX(-200); //go left
+  }
+  else if (cursors.right.isDown && player.x <= xLimit) {
+      player.setVelocityX(200); //go right
+  }
+  else {
+      player.setVelocityX(0); //don't move left or righ
+            }
+            if (cursors.up.isDown && player.y >= 0) {
+    player.setVelocityY(-200); //move up
+}
+else if (cursors.down.isDown && player.y <= yLimit) {
+    player.setVelocityY(200); //move down
+}
+else {
+    player.setVelocityY(0); //don't move up or down
+}
+
+        }
+            </script>
+    </body>
+</html>
