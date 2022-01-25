@@ -37,14 +37,13 @@
             {
                 this.load.image('sky', 'assets/octagon.jpg');
                 this.load.image('circle', 'assets/circle.png');
-                this.load.image('grey_tile', 'assets/grey_tile.png');
-                
+                this.load.image('grey_tile', 'assets/grey_tile.png');   
             }
         
             function create ()
             {
                 let background = this.add.image(0, 0, 'sky');
-                let item1 = this.add.image(380, 320, 'grey_tile')
+                item1 = this.add.image(380, 320, 'grey_tile');
                 background.x = background.displayWidth / 2;
                 background.y = background.displayHeight/1.5;
                 xLimit = background.displayWidth; //the player cannot go beyond these x and
@@ -56,15 +55,14 @@
                   //  speed: 100,
                   //  scale: { start: 1, end: 0 },
                    // blendMode: 'ADD'
-               // });
-               
+               // });    
                item1.setInteractive().on('pointerover', function() {item1.setTint(0x39FF14)});
                item1.setInteractive().on('pointerout', function() {item1.setTint()});
                cursors = this.input.keyboard.createCursorKeys();    
             }
 
             function update ()
-            {
+            {console.log(Math.hypot(player.x, player.y));
                 if (cursors.left.isDown && player.x >= 0) {
       player.setVelocityX(-200); //go left
   }
