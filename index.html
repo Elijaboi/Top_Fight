@@ -62,7 +62,7 @@
             }
 
             function update ()
-            {console.log(Math.hypot(player.x, player.y));
+            {console.log(Phaser.Math.Distance.Chebyshev(player.x,player.y,item1.x,item1.y));
                 if (cursors.left.isDown && player.x >= 0) {
       player.setVelocityX(-200); //go left
   }
@@ -73,15 +73,21 @@
       player.setVelocityX(0); //don't move left or right
             }
             if (cursors.up.isDown && player.y >= 0) {
-    player.setVelocityY(-200); //move up
+    player.body.y -= 10;; //move up
 }
 else if (cursors.down.isDown && player.y <= yLimit) {
-    player.setVelocityY(200); //move down
+    player.angle += 1;; //move down
 }
 else {
     player.setVelocityY(0); //don't move up or down
 }
-if (Math.hypot(player.x, player.y) < 100) {item1.setTint(0x39FF14);}
+//if (Math.hypot(player.x, player.y) < 100)
+if(Phaser.Math.Distance.Chebyshev(player.x,player.y,item1.x,item1.y)<100)
+{item1.setTint(0x39FF14);}
+else {
+    item1.setTint();
+}
+
 
         }
             </script>
