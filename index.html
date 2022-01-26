@@ -44,6 +44,14 @@
             {
                 let background = this.add.image(0, 0, 'sky');
                 item1 = this.add.image(380, 320, 'grey_tile');
+                item2 = this.add.image(310, 320, 'grey_tile');
+                item3 = this.add.image(450, 320, 'grey_tile');
+                item4 = this.add.image(380, 250, 'grey_tile');
+                item5 = this.add.image(310, 250, 'grey_tile');
+                item6 = this.add.image(450, 250, 'grey_tile');
+                item8 = this.add.image(380, 390, 'grey_tile');
+                item9 = this.add.image(310, 390, 'grey_tile');
+                item10 = this.add.image(450, 390, 'grey_tile');
                 background.x = background.displayWidth / 2;
                 background.y = background.displayHeight/1.5;
                 xLimit = background.displayWidth; //the player cannot go beyond these x and
@@ -58,16 +66,23 @@
                // });    
                item1.setInteractive().on('pointerover', function() {item1.setTint(0x39FF14)});
                item1.setInteractive().on('pointerout', function() {item1.setTint()});
-               cursors = this.input.keyboard.createCursorKeys();    
+               cursors = this.input.keyboard.createCursorKeys();   
+               this.input.keyboard.on('keydown-A', function (event) {
+
+                player.angle += 1;
+
+}); 
             }
 
             function update ()
             {console.log(Phaser.Math.Distance.Chebyshev(player.x,player.y,item1.x,item1.y));
                 if (cursors.left.isDown && player.x >= 0) {
-      player.setVelocityX(-200); //go left
+                    player.body.x -= 10;
+                    // player.setVelocityX(-200); //go left
   }
   else if (cursors.right.isDown && player.x <= xLimit) {
-      player.setVelocityX(200); //go right
+    player.body.x += 10; 
+    // player.setVelocityX(200); //go right
   }
   else {
       player.setVelocityX(0); //don't move left or right
@@ -76,7 +91,13 @@
     player.body.y -= 10;; //move up
 }
 else if (cursors.down.isDown && player.y <= yLimit) {
-    player.angle += 1;; //move down
+    player.body.y += 10;
+    //player.angle += 1;; //move down
+}
+else if 
+ (Phaser.Input.Keyboard.JustDown('keydown-A') && player.y <= yLimit) {
+    //player.body.y += 10;
+    player.angle += 1; //move down
 }
 else {
     player.setVelocityY(0); //don't move up or down
