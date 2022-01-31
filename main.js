@@ -2,10 +2,6 @@
 //import './dist/rexuiplugin.min.js'
 
 var config = {
-    parent: 'phaser-container',
-	dom: {
-        createContainer: true
-    },
        
     type: Phaser.AUTO,
     width: 800,
