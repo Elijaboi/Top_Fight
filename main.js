@@ -1,5 +1,8 @@
 
 //import './dist/rexuiplugin.min.js'
+const COLOR_PRIMARY = 0x4e342e;
+const COLOR_LIGHT = 0x7b5e57;
+const COLOR_DARK = 0x260e04;
 
 var config = {
        
@@ -208,7 +211,7 @@ if(Phaser.Math.Distance.Chebyshev(player.x,player.y,item1.x,item1.y)<100)
 else {item1.setTint();}
 
 
-var createMenu = function(scene,x, y, items, onClick){
+ createMenu = function(scene,x, y, items, onClick){
     var exapndOrientation = 'y';
     var easeOrientation = 'y';
 
@@ -219,7 +222,7 @@ var createMenu = function(scene,x, y, items, onClick){
         items: items,
         createButtonCallback: function(item, i){
             return scene.rexUI.add.label({
-                background: scene.UI.add.roundRectangle(0,0,2,2,0,COLOR_PRIMARY),
+                background: scene.rexUI.add.roundRectangle(0,0,2,2,0,COLOR_PRIMARY),
                 text: scene.add.text(0,0,item.name, {
                     fontSize: '20px'
                 }),
