@@ -38,12 +38,9 @@ let turn=0;
 function preload ()
 {   this.load.scenePlugin({
     key: 'rexuiplugin',
-    url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
+    url: 'rexuiplugin.min.js',
     sceneKey: 'rexUI'
 })
-
-this.load.plugin('rextexteditplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js', true)
-
     this.load.image('sky', 'assets/octagon.jpg');
     this.load.image('circle', 'assets/circle.png');
     this.load.image('p2', 'assets/player2.png');
@@ -51,7 +48,73 @@ this.load.plugin('rextexteditplugin', 'https://raw.githubusercontent.com/rexrain
 }
 
 function create ()
-{   background = this.add.image(0, 0, 'sky');
+{
+    var items = [
+        {
+            name: 'AA',
+            children: [
+                {
+                    name: 'AA-0',
+                    children: [
+                        { name: 'AA-00' },
+                        { name: 'AA-01' },
+                        { name: 'AA-02' },
+                    ]
+                },
+                {
+                    name: 'AA-1',
+                    children: [
+                        { name: 'AA-10' },
+                        { name: 'AA-11' },
+                        { name: 'AA-12' },
+                    ]
+                },
+                {
+                    name: 'AA-2',
+                    children: [
+                        { name: 'AA-20' },
+                        { name: 'AA-21' },
+                        { name: 'AA-22' },
+                    ]
+                },
+            ]
+        },
+        {
+            name: 'BB',
+            children: [
+                { name: 'BB-0' },
+                { name: 'BB-1' },
+                { name: 'BB-2' },
+            ]
+        },
+        {
+            name: 'CC',
+            children: [
+                { name: 'CC-0' },
+                { name: 'CC-1' },
+                { name: 'CC-2' },
+            ]
+        },
+    ];
+
+ var scene=this,
+    menu=undefined;
+    this.print = this.add.text(0, 0 ,' ');
+    this.input.on('pointerdown', function(pointer){
+        if (menu===undefined)
+        {
+            menu=createMenu(scene,pointer.x,pointer.y,items,function(button){
+                scene.print.text+='Click' +button.text+'\n';
+            });}
+        else if (!menu.isInTouching(pointer)){
+            menu.collapse();
+            menu=undefined;
+            scene.print.text='';
+        }    
+        
+    },this);
+
+ background = this.add.image(0, 0, 'sky');
  item1 = this.add.image(380, 320, 'grey_tile');
  item2 = this.add.image(310, 320, 'grey_tile');
  item3 = this.add.image(450, 320, 'grey_tile');
@@ -144,5 +207,63 @@ if(Phaser.Math.Distance.Chebyshev(player.x,player.y,item1.x,item1.y)<100)
 {item1.setTint(0x39FF14);}
 else {item1.setTint();}
 
+
+var createMenu = function(scene,x, y, items, onClick){
+    var exapndOrientation = 'y';
+    var easeOrientation = 'y';
+
+    var menu= scene.rexUI.add.menu({
+        x:x,
+        y:y,
+        orientation:exapndOrientation,
+        items: items,
+        createButtonCallback: function(item, i){
+            return scene.rexUI.add.label({
+                background: scene.UI.add.roundRectangle(0,0,2,2,0,COLOR_PRIMARY),
+                text: scene.add.text(0,0,item.name, {
+                    fontSize: '20px'
+                }),
+                icon: scene.rexUI.add.roundRectangle(0,0,0,0,10,COLOR_DARK),
+                space:{
+                    left:10,
+                    right:10,
+                    top:10,
+                    bottom:10,
+                    icon:10
+                }
+            })
+        },
+        easeIn: {
+            duration: 500,
+            orientation: easeOrientation
+        },
+
+        // easeOut: 100,
+        easeOut: {
+            duration: 100,
+            orientation: easeOrientation
+        }
+
+        
+    });
+    menu
+        .on('button.over', function (button) {
+            button.getElement('background').setStrokeStyle(1, 0xffffff);
+        })
+        .on('button.out', function (button) {
+            button.getElement('background').setStrokeStyle();
+        })
+        .on('button.click', function (button) {
+            onClick(button);
+        })
+        .on('popup.complete', function (subMenu) {
+            console.log('popup.complete')
+        })
+        .on('scaledown.complete', function () {
+            console.log('scaledown.complete')
+        })  
+
+    return menu;
+}
 
 }
