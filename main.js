@@ -133,7 +133,7 @@ function create ()
  yLimit = background.displayHeight;
     //var particles = this.add.particles('circle');
  player = this.physics.add.sprite(380, 320, 'circle');
- player2 = this.physics.add.sprite(380, 320, 'p2') //create the player sprite
+ player2 = this.physics.add.sprite(80, 80, 'p2') //create the player sprite
     player.setScale(0.4);
     player2.setScale(0.4);
    // var emitter = particles.createEmitter({
@@ -157,6 +157,11 @@ function create ()
    this.input.keyboard.on('keydown-Q', function (event) {
      player2.angle += 45;
                                                         });
+   if(Math.hypot(player.x, player.y) < 100)
+{
+    console.log("proximity");
+player.add.tween(sprite.scale).to( { x: 2, y: 2 }, 2000, Phaser.Easing.Linear.None, true);
+}
 }
 function update ()
 {
@@ -205,10 +210,22 @@ else {
 player2.setVelocityY(0);                                                            
 }
 }
-if (Math.hypot(player.x, player.y) < 100)
-if(Phaser.Math.Distance.Chebyshev(player.x,player.y,item1.x,item1.y)<100)
-{item1.setTint(0x39FF14);}
+if (Math.hypot(player.x, player.y) < 100){
+    console.log("proximity");
+player.add.tween(sprite.scale).to( { x: 2, y: 2 }, 2000, Phaser.Easing.Linear.None, true);
+}
+if(Phaser.Math.Distance.Chebyshev(player.x,player.y,player2.x,player2.y)<100)
+{console.log("they close");
+    //item1.setTint(0x39FF14);
+    player.add.tween(sprite.scale).to( { x: 2, y: 2 }, 2000, Phaser.Easing.Linear.None, true);
+
+}
 else {item1.setTint();}
+
+//if(player)
+//{
+//player.setScale(turn++);
+//}
 
 
  createMenu = function(scene,x, y, items, onClick){
