@@ -48,6 +48,7 @@ function preload ()
     this.load.image('circle', 'assets/circle.png');
     this.load.image('p2', 'assets/player2.png');
     this.load.image('grey_tile', 'assets/grey_tile.png');   
+    this.load.image('nft','assets/ngannou.png');
 }
 
 function create ()
@@ -127,6 +128,7 @@ function create ()
  item8 = this.add.image(380, 390, 'grey_tile');
  item9 = this.add.image(310, 390, 'grey_tile');
  item10 = this.add.image(450, 390, 'grey_tile');
+ nft = this.add.image(450, 390, 'nft').setScale(0.2).setAlpha(0);
  background.x = background.displayWidth / 2;
  background.y = background.displayHeight/1.5;
   xLimit = background.displayWidth; //the player cannot go beyond these x and
@@ -188,7 +190,7 @@ turn++;
 else {player.setVelocityY(0);                                                            }
 }
 if(turn%2!=0){
-if (Phaser.Input.Keyboard.JustDown(A) && player2.x <= xLimit) { 
+if (Phaser.Input.Keyboard.JustDown(A) && player2.x <= xLimit) {  
 player2.body.x -= 50;
 turn++;
                                                          }
@@ -211,13 +213,28 @@ player2.setVelocityY(0);
 }
 }
 if (Math.hypot(player.x, player.y) < 100){
-    console.log("proximity");
-player.add.tween(sprite.scale).to( { x: 2, y: 2 }, 2000, Phaser.Easing.Linear.None, true);
+    console.log("hit");
+    this.tweens.add({
+        targets: image,
+       // setAlpha:1,
+        scaleX: 2,
+        scaleY: 2,
+        ease: 'Power1',
+        duration: 3000
+    });
 }
 if(Phaser.Math.Distance.Chebyshev(player.x,player.y,player2.x,player2.y)<100)
-{console.log("they close");
+{//console.log(Phaser.VERSION);
+    this.tweens.add({
+        targets: nft,
+        alpha:1,
+        scaleX: 0.6,
+        scaleY: 0.6,
+        ease: 'Power1',
+        duration: 3000
+    });
     //item1.setTint(0x39FF14);
-    player.add.tween(sprite.scale).to( { x: 2, y: 2 }, 2000, Phaser.Easing.Linear.None, true);
+   // player.add.tween(sprite.scale).to( { x: 2, y: 2 }, 2000, Phaser.Easing.Linear.None, true);
 
 }
 else {item1.setTint();}
