@@ -52,73 +52,8 @@ function preload ()
 }
 
 function create ()
-{
-    var items = [
-        {
-            name: 'AA',
-            children: [
-                {
-                    name: 'AA-0',
-                    children: [
-                        { name: 'AA-00' },
-                        { name: 'AA-01' },
-                        { name: 'AA-02' },
-                    ]
-                },
-                {
-                    name: 'AA-1',
-                    children: [
-                        { name: 'AA-10' },
-                        { name: 'AA-11' },
-                        { name: 'AA-12' },
-                    ]
-                },
-                {
-                    name: 'AA-2',
-                    children: [
-                        { name: 'AA-20' },
-                        { name: 'AA-21' },
-                        { name: 'AA-22' },
-                    ]
-                },
-            ]
-        },
-        {
-            name: 'BB',
-            children: [
-                { name: 'BB-0' },
-                { name: 'BB-1' },
-                { name: 'BB-2' },
-            ]
-        },
-        {
-            name: 'CC',
-            children: [
-                { name: 'CC-0' },
-                { name: 'CC-1' },
-                { name: 'CC-2' },
-            ]
-        },
-    ];
-
- var scene=this,
-    menu=undefined;
-    this.print = this.add.text(0, 0 ,' ');
-    this.input.on('pointerdown', function(pointer){
-        if (menu===undefined)
-        {
-            menu=createMenu(scene,pointer.x,pointer.y,items,function(button){
-                scene.print.text+='Click' +button.text+'\n';
-            });}
-        else if (!menu.isInTouching(pointer)){
-            menu.collapse();
-            menu=undefined;
-            scene.print.text='';
-        }    
-        
-    },this);
-
- background = this.add.image(0, 0, 'sky');
+{   var scene=this,
+    background = this.add.image(0, 0, 'sky');
  item1 = this.add.image(380, 320, 'grey_tile');
  item2 = this.add.image(310, 320, 'grey_tile');
  item3 = this.add.image(450, 320, 'grey_tile');
@@ -128,10 +63,10 @@ function create ()
  item8 = this.add.image(380, 390, 'grey_tile');
  item9 = this.add.image(310, 390, 'grey_tile');
  item10 = this.add.image(450, 390, 'grey_tile');
- nft = this.add.image(450, 390, 'nft').setScale(0.2).setAlpha(0);
+ this.nft = this.add.image(450, 390, 'nft').setScale(0.2).setAlpha(0);
  background.x = background.displayWidth / 2;
  background.y = background.displayHeight/1.5;
-  xLimit = background.displayWidth; //the player cannot go beyond these x and
+ xLimit = background.displayWidth; //the player cannot go beyond these x and
  yLimit = background.displayHeight;
     //var particles = this.add.particles('circle');
  player = this.physics.add.sprite(380, 320, 'circle');
@@ -225,6 +160,8 @@ if (Math.hypot(player.x, player.y) < 100){
 }
 if(Phaser.Math.Distance.Chebyshev(player.x,player.y,player2.x,player2.y)<100)
 {//console.log(Phaser.VERSION);
+    this.nft.setVelocityX(20);
+
     this.tweens.add({
         targets: nft,
         alpha:1,
@@ -233,9 +170,12 @@ if(Phaser.Math.Distance.Chebyshev(player.x,player.y,player2.x,player2.y)<100)
         ease: 'Power1',
         duration: 3000
     });
+    zone = this.add.zone(nft.body.x, nft.body.y, 20, 20).setRectangleDropZone(20, 10);
     //item1.setTint(0x39FF14);
    // player.add.tween(sprite.scale).to( { x: 2, y: 2 }, 2000, Phaser.Easing.Linear.None, true);
-
+   graphics = this.add.graphics();
+   graphics.lineStyle(2, 0xffff00);
+   graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
 }
 else {item1.setTint();}
 
@@ -243,64 +183,7 @@ else {item1.setTint();}
 //{
 //player.setScale(turn++);
 //}
+   
 
-
- createMenu = function(scene,x, y, items, onClick){
-    var exapndOrientation = 'y';
-    var easeOrientation = 'y';
-
-    var menu= scene.rexUI.add.menu({
-        x:x,
-        y:y,
-        orientation:exapndOrientation,
-        items: items,
-        createButtonCallback: function(item, i){
-            return scene.rexUI.add.label({
-                background: scene.rexUI.add.roundRectangle(0,0,2,2,0,COLOR_PRIMARY),
-                text: scene.add.text(0,0,item.name, {
-                    fontSize: '20px'
-                }),
-                icon: scene.rexUI.add.roundRectangle(0,0,0,0,10,COLOR_DARK),
-                space:{
-                    left:10,
-                    right:10,
-                    top:10,
-                    bottom:10,
-                    icon:10
-                }
-            })
-        },
-        easeIn: {
-            duration: 500,
-            orientation: easeOrientation
-        },
-
-        // easeOut: 100,
-        easeOut: {
-            duration: 100,
-            orientation: easeOrientation
-        }
-
-        
-    });
-    menu
-        .on('button.over', function (button) {
-            button.getElement('background').setStrokeStyle(1, 0xffffff);
-        })
-        .on('button.out', function (button) {
-            button.getElement('background').setStrokeStyle();
-        })
-        .on('button.click', function (button) {
-            onClick(button);
-        })
-        .on('popup.complete', function (subMenu) {
-            console.log('popup.complete')
-        })
-        .on('scaledown.complete', function () {
-            console.log('scaledown.complete')
-        })  
-
-    return menu;
-}
 
 }
