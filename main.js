@@ -63,7 +63,7 @@ function create ()
  item8 = this.add.image(380, 390, 'grey_tile');
  item9 = this.add.image(310, 390, 'grey_tile');
  item10 = this.add.image(450, 390, 'grey_tile');
- this.nft = this.add.image(450, 390, 'nft').setScale(0.2).setAlpha(0);
+ nft = this.add.image(450, 390, 'nft').setScale(0.2).setAlpha(0);
  background.x = background.displayWidth / 2;
  background.y = background.displayHeight/1.5;
  xLimit = background.displayWidth; //the player cannot go beyond these x and
@@ -160,7 +160,7 @@ if (Math.hypot(player.x, player.y) < 100){
 }
 if(Phaser.Math.Distance.Chebyshev(player.x,player.y,player2.x,player2.y)<100)
 {//console.log(Phaser.VERSION);
-    this.nft.setVelocityX(20);
+    nft.setPosition(player.x,player.y);
 
     this.tweens.add({
         targets: nft,
@@ -170,7 +170,7 @@ if(Phaser.Math.Distance.Chebyshev(player.x,player.y,player2.x,player2.y)<100)
         ease: 'Power1',
         duration: 3000
     });
-    zone = this.add.zone(nft.body.x, nft.body.y, 20, 20).setRectangleDropZone(20, 10);
+    zone = this.add.zone(nft.x+30, nft.y+180, 20, 20).setRectangleDropZone(50, 10);
     //item1.setTint(0x39FF14);
    // player.add.tween(sprite.scale).to( { x: 2, y: 2 }, 2000, Phaser.Easing.Linear.None, true);
    graphics = this.add.graphics();
